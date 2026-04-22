@@ -997,7 +997,7 @@ ul { list-style: none; }
 .jobs-table tbody td {
   padding: 18px 20px;
   color: #ffffff;
-  vertical-align: top;
+  vertical-align: middle;
   line-height: 1.7;
 }
 .jobs-table .table-bullet-list {
