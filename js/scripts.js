@@ -200,7 +200,7 @@
   const deadline = new Date('2026-05-10T23:59:59+09:00');
   const now = new Date();
   const diffMs = deadline - now;
-  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
   if (diffDays > 0) {
     el.textContent = 'D-' + diffDays;
   } else if (diffDays === 0) {
