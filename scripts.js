@@ -197,10 +197,10 @@
 
   const el = document.getElementById('navDday');
   if (!el) return;
-  const deadline = new Date('2026-05-09T23:59:59+09:00');
+  const deadline = new Date('2026-05-10T23:59:59+09:00');
   const now = new Date();
   const diffMs = deadline - now;
-  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
   if (diffDays > 0) {
     el.textContent = 'D-' + diffDays;
   } else if (diffDays === 0) {
@@ -1186,12 +1186,12 @@ if (window.location.hash) {
 })();
 
 /* ================================================================
-   10. COUNTDOWN TIMER (target: 2026-05-09 23:59:59 KST)
+   10. COUNTDOWN TIMER (target: 2026-05-10 23:59:59 KST)
    ================================================================ */
 
 (function initCountdown() {
 
-  const target = new Date('2026-05-09T23:59:59+09:00').getTime();
+  const target = new Date('2026-05-10T23:59:59+09:00').getTime();
   const cdDays = qs('#cdDays');
   const cdHours = qs('#cdHours');
   const cdMins = qs('#cdMins');
