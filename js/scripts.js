@@ -1443,3 +1443,64 @@ if (window.location.hash) {
     walkNode(content);
   });
 }());
+
+/* ============================================================
+   GA4 이벤트 트래킹
+   - job_detail_view : 직무 상세보기 버튼 클릭
+   - apply_click     : 지원하기 버튼 위치별 클릭
+============================================================ */
+(function initGA4Tracking() {
+  'use strict';
+
+  function sendEvent(name, params) {
+    if (typeof gtag === 'function') {
+      gtag('event', name, params);
+    }
+  }
+
+  // ── 1. 직무 상세보기 클릭 ──────────────────────────────────
+  var JOB_NAMES = {
+    'modal-jd-ai-agent':          'AI Agent 전문가',
+    'modal-jd-vlm':               'VLM 전문가',
+    'modal-jd-math-optimization': '수학적 최적화 전문가',
+    'modal-jd-ontology':          'Ontology 전문가',
+    'modal-jd-physical-ai':       'Physical AI 엔지니어',
+    'modal-jd-ax':                'AX 전략기획'
+  };
+
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-jd-modal]');
+    if (btn) {
+      var modalId = btn.getAttribute('data-jd-modal');
+      sendEvent('job_detail_view', {
+        job_title: JOB_NAMES[modalId] || modalId
+      });
+    }
+  });
+
+  // ── 2. 지원하기 버튼 위치별 클릭 ──────────────────────────
+  var APPLY_BUTTONS = [
+    { selector: '.btn-apply-nav',               location: '네비게이션' },
+    { selector: '.btn-hero',                    location: '히어로 섹션' },
+    { selector: '.modal-jd-actions .btn-apply', location: 'JD 모달 내' },
+    { selector: '.btn-apply-big',               location: '하단 CTA' }
+  ];
+
+  APPLY_BUTTONS.forEach(function(item) {
+    document.querySelectorAll(item.selector).forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var jobTitle = null;
+        var parentModal = btn.closest('.modal-overlay.modal-jd');
+        if (parentModal) {
+          var titleEl = parentModal.querySelector('.modal-jd-title');
+          jobTitle = titleEl ? titleEl.textContent.trim() : null;
+        }
+        sendEvent('apply_click', {
+          button_location: item.location,
+          job_title: jobTitle
+        });
+      });
+    });
+  });
+
+}());
